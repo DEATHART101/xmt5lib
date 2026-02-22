@@ -12,7 +12,7 @@ MT_PASSWORD = "7nYxBs*j"
 SYMBOL         = "XAUUSD"
 DIRECTION      = "SHORT"   # "LONG" or "SHORT"
 LOT_SIZE       = 0.01
-CHECK_INTERVAL = 1         # seconds between each check
+CHECK_INTERVAL = 5         # seconds between each check
 
 
 def main():

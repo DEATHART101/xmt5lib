@@ -10,6 +10,7 @@ class PriceBounce:
         self.lot_size = lot_size
         self.direction: str | None = None
         self.tp_price = tp_price
+        self._last_price: float | None = None
 
     def set_direction(self, direction: str):
         d = direction.upper()
@@ -38,7 +39,7 @@ class PriceBounce:
                     self._close_position(pos)
             return
 
-        # No open positions: place a market order
+        # No open positions: check price momentum before placing order
         tick = mt5.symbol_info_tick(self.symbol)
         if tick is None:
             print(f"[{_now()}] symbol_info_tick() failed: {mt5.last_error()}")
@@ -54,6 +55,20 @@ class PriceBounce:
             price = tick.bid
             sl    = price + PRICE_OFFSET
             tp    = price - self.tp_price
+
+        last = self._last_price
+        self._last_price = price
+
+        if last is None:
+            print(f"[{_now()}] first check, recording price={price}, waiting for next tick.")
+            return
+
+        if self.direction == "LONG" and price <= last:
+            print(f"[{_now()}] LONG: price {price} <= last {last}, skip.")
+            return
+        if self.direction == "SHORT" and price >= last:
+            print(f"[{_now()}] SHORT: price {price} >= last {last}, skip.")
+            return
 
         request = {
             "action":      mt5.TRADE_ACTION_DEAL,
