@@ -12,7 +12,7 @@ MT_PASSWORD = "7nYxBs*j"
 SYMBOL         = "XAUUSD"
 DIRECTION      = "LONG"   # "LONG" or "SHORT"
 LOT_SIZE       = 0.01
-CHECK_INTERVAL = 5         # seconds between each check
+CHECK_INTERVAL = 30        # seconds between each trading check (managed inside strategy)
 
 
 def main():
@@ -25,13 +25,14 @@ def main():
 
     print(f"Connected. Strategy=PriceBounce | Symbol={SYMBOL} | Direction={DIRECTION} | Lot={LOT_SIZE}")
 
-    strategy = PriceBounce(symbol=SYMBOL, lot_size=LOT_SIZE, tp_price=7.5)
+    strategy = PriceBounce(symbol=SYMBOL, lot_size=LOT_SIZE, tp_price=7.5,
+                           check_interval=CHECK_INTERVAL)
 
     try:
         while True:
             strategy.set_direction(DIRECTION)
             strategy.on_tick()
-            time.sleep(CHECK_INTERVAL)
+            time.sleep(1)  # tight loop; interval logic is inside strategy
     except KeyboardInterrupt:
         print("Strategy stopped by user.")
     finally:
