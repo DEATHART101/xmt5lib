@@ -10,7 +10,7 @@ MT_PASSWORD = "7nYxBs*j"
 
 # === Strategy Config ===
 SYMBOL         = "XAUUSD"
-DIRECTION      = "SHORT"   # "LONG" or "SHORT"
+DIRECTION      = "LONG"   # "LONG" or "SHORT"
 LOT_SIZE       = 0.01
 CHECK_INTERVAL = 5         # seconds between each check
 
@@ -25,7 +25,7 @@ def main():
 
     print(f"Connected. Strategy=PriceBounce | Symbol={SYMBOL} | Direction={DIRECTION} | Lot={LOT_SIZE}")
 
-    strategy = PriceBounce(symbol=SYMBOL, lot_size=LOT_SIZE, tp_price=10)
+    strategy = PriceBounce(symbol=SYMBOL, lot_size=LOT_SIZE, tp_price=7.5)
 
     try:
         while True:
